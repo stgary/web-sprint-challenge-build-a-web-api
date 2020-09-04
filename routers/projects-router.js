@@ -35,7 +35,20 @@ router.get('/:id', (req, res) => {
        }); 
  });
 
+// Get Actions
 
+router.get('/:id/actions', validateProjectId, (req, res) => {
+    db.getProjectActions(req.params.id)
+       .then(dbRes => {
+          res.status(200).json(dbRes);
+       })
+       .catch(error => {
+          console.log(error);
+          res.status(500).json({
+             message: "The list of actions could not be retrieved.",
+          });
+       });
+ });
 
 // custom middleware
 
