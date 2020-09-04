@@ -84,6 +84,25 @@ router.delete('/:id', validateProjectId, (req, res) => {
 
 // custom middleware
 
+function validateProjectId(req, res, next) {
+    db.get(req.params.id)
+       .then(dbRes => {
+          if (dbRes) {
+             next();
+          } else {
+             res.status(400).json({ 
+                message: "Invalid project id (MW)."
+             }); 
+          }
+       })
+       .catch(error => {
+          console.log(error);
+             res.status(500).json({
+                message: "Failure validating project id (MW)."
+             });
+       });
+ }
+
 function validateProject(req, res, next) {
     const { name, description } = req.body
     if (name === undefined) {
