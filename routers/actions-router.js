@@ -23,6 +23,21 @@ router.post('/:id', validateAction, validateProjectId, (req, res) => {
        });
   });
 
+// Get
+
+router.get('/:id', (req, res) => {
+    db.get(req.params.id)
+       .then(dbRes => {
+          res.status(200).json(dbRes);
+       })
+       .catch(error => {
+          console.log(error);
+          res.status(404).json({
+             message: "There was an error while retrieving the action."
+          });
+       }); 
+ });
+
 // custom middleware
 
 function validateActionId(req, res, next) {
