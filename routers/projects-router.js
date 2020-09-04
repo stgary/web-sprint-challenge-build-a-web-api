@@ -22,7 +22,7 @@ router.post('/', validateProject, (req, res) => {
 
 // Get
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validateProjectId, (req, res) => {
     db.get(req.params.id)
        .then(dbRes => {
           res.status(200).json(dbRes);
