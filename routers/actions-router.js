@@ -38,6 +38,21 @@ router.get('/:id', (req, res) => {
        }); 
  });
 
+ // Put
+
+ router.put('/:id', validateActionId, validateAction, (req, res) => {
+    db.update(req.params.id, req.body)
+       .then(dbRes => {
+          res.status(200).json(req.body);
+       })
+       .catch(error => {
+          console.log(error);
+          res.status(500).json({ 
+             message: "The action information could not be modified." 
+          });
+       });
+ });
+
 // custom middleware
 
 function validateActionId(req, res, next) {
