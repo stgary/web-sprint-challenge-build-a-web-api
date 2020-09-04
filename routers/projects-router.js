@@ -50,6 +50,21 @@ router.get('/:id/actions', validateProjectId, (req, res) => {
        });
  });
 
+ // Put
+
+ router.put('/:id', validateProjectId, validateProject, (req, res) => {
+    db.update(req.params.id, req.body)
+       .then(dbRes => {
+          res.status(200).json(req.body);
+       })
+       .catch(error => {
+          console.log(error);
+          res.status(500).json({ 
+             message: "The project information could not be modified." 
+          });
+       });
+ });
+
 // custom middleware
 
 function validateProject(req, res, next) {
