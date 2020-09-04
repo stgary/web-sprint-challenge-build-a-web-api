@@ -53,6 +53,23 @@ router.get('/:id', (req, res) => {
        });
  });
 
+ // Delete
+
+ router.delete('/:id', validateActionId, (req, res) => {
+    db.remove(req.params.id)
+       .then(dbRes => {
+          res.status(201).json({
+             message: "Action was successfully removed."
+          })
+       })
+       .catch(error => {
+          console.log(error);
+          res.status(500).json({
+             message: "Error: unable to remove action."
+          });
+       });
+ });
+
 // custom middleware
 
 function validateActionId(req, res, next) {
