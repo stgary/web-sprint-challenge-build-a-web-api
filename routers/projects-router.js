@@ -20,6 +20,23 @@ router.post('/', validateProject, (req, res) => {
        });
  });
 
+// Get
+
+router.get('/:id', (req, res) => {
+    db.get(req.params.id)
+       .then(dbRes => {
+          res.status(200).json(dbRes);
+       })
+       .catch(error => {
+          console.log(error);
+          res.status(404).json({
+             message: "The project with the specified ID does not exist."
+          });
+       }); 
+ });
+
+
+
 // custom middleware
 
 function validateProject(req, res, next) {
