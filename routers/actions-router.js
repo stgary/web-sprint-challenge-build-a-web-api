@@ -4,7 +4,45 @@ const router = express.Router();
 const db = require("../data/helpers/actionModel.js");
 const dbp = require("../data/helpers/projectModel.js");
 
+// CRUD operations
+
+// Post
+
+router.post('/:id', validateAction, validateProjectId, (req, res) => {
+    let body = req.body;
+    body.project_id = req.params.id;
+    db.insert(req.body)
+       .then(dbRes => {
+          res.status(201).json(req.body)
+       })
+       .catch(error => {
+          console.log(error);
+          res.status(500).json({
+             message: "There was an error while saving the action to the database.",
+          });
+       });
+  });
+
 // custom middleware
+
+function validateActionId(req, res, next) {
+    db.get(req.params.id)
+       .then(dbRes => {
+          if (dbRes) {
+             next();
+          } else {
+             res.status(400).json({ 
+                message: "Invalid action id (MW)."
+             }); 
+          }
+       })
+       .catch(error => {
+          console.log(error);
+             res.status(500).json({
+                message: "Validating id failure (MW)."
+             });
+       });
+ }
 
 function validateAction(req, res, next) {
     const { notes, description } = req.body
